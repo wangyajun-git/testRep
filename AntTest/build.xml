@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+
+<project name="test" default="run-Test" basedir=".">
+ 
+	<property name="src" value="src"/>
+	<property name="lib" value="build/lib"/>
+	<property name="dest" value="bin"/>
+	<property name="np_jar" value="build/lib/test.jar"/>
+	<property name="libs" value="libs"/>
+ 
+	<target name="create-path">
+		<mkdir dir="${dest}"/>
+		<mkdir dir="${lib}"/>
+	</target>
+	
+	<path id="lib-classpath">
+		<fileset dir="${libs}">
+			<include name="**/*.jar" />
+		</fileset>
+	</path>
+ 
+	<target name="create-class" depends="create-path">
+		<javac srcdir="${src}" destdir="${dest}" includeAntRuntime="false" classpathref="lib-classpath">
+			<compilerarg line="-encoding UTF-8"/>
+		</javac>
+	</target>
+ 
+	<target name="create-jar" depends="create-class">
+		<jar destfile="${np_jar}" basedir="${dest}">
+		   <manifest>
+			  <attribute name="Main-Class" value="Test"/>
+		   </manifest>
+		</jar>
+	</target>
+ 
+	<target name="run-Test" depends="create-jar">
+		<java classname="com.test.andrew.TestMain" classpath="${np_jar}"/>
+	</target>
+ 
+	<target name="clean">
+		<delete file="${np_jar}"/>
+		<delete dir="${dest}"/>
+		<delete dir="${lib}"/>
+	</target>
+</project>
+
